@@ -1,0 +1,9 @@
+[sendmail]
+
+smtp_server=smtp.gmail.com
+smtp_port=587
+error_logfile=error.log
+debug_logfile=debug.log
+auth_username=fmiparking@gmail.com
+auth_password=parking@fmi
+force_sender=fmiparking@gmail.com
