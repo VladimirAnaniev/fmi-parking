@@ -1,6 +1,6 @@
 <?php
 
-include_once('ParkingDB.conf.php');
+include_once 'ParkingDB.conf.php';
 
 class ParkingDB{
     private $connection = null;

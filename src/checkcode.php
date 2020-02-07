@@ -1,17 +1,17 @@
 <?php
     include_once 'header.php';
 ?>
-<main>
-	<body>
-		<div class="box">
-			<h2>Вдигане на бариерата</h2>
-			<form autocomplete="off" action="functions/api.php/liftbarier" method="POST">
-				<div class="inputBox">
-					<input type="text" name="email" required="">
-					<label for="">E-mail</label>
-				</div>
-				<input type="submit" name="submit" value="Провери">
-			</form>
-		</div>
-	</body>
-</main>
+
+
+<form class="form" autocomplete="off" action="functions/api.php/forgoliftbarierttenpass" method="POST">
+	<h1 class="h3 mb-3 font-weight-normal">Вдигане на бариерата</h1>
+
+	<label for="emailInput" class="sr-only">Имейл Адрес</label>
+	<input type="email" required name="email" class="form-control" id="emailInput" placeholder="Имелйл Адрес">
+
+	<input type="submit" name="submit" class="btn btn-lg btn-primary btn-block" value="Вдигни Бариерата">
+</form>
+
+<?php
+    include_once 'footer.php';
+?>
