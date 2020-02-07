@@ -6,17 +6,16 @@
 	}
     include_once 'header.php';
 ?>
-<main>
-	<body>
-		<div class="box">
-			<h2>Забравена парола</h2>
-			<form autocomplete="off" action="functions/api.php/forgottenpass" method="POST">
-				<div class="inputBox">
-					<input type="text" name="email" required="">
-					<label for="">E-mail</label>
-				</div>
-				<input type="submit" name="submit" value="Изпрати имейл с нова">
-			</form>
-		</div>
-	</body>
-</main>
+
+<form class="form" autocomplete="off" action="functions/api.php/forgottenpass" method="POST">
+	<h1 class="h3 mb-3 font-weight-normal">Забравена парола</h1>
+
+	<label for="emailInput" class="sr-only">Имейл Адрес</label>
+	<input type="email" required name="email" class="form-control" id="emailInput" placeholder="Имелйл Адрес">
+
+	<input type="submit" name="submit" class="btn btn-lg btn-primary btn-block" value="Изпрати имейл">
+</form>
+
+<?php
+    include_once 'footer.php';
+?>
