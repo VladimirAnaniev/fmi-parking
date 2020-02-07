@@ -11,16 +11,16 @@
 <title>ФМИ-Паркинг</title>
 
 <!--CSS styles-->
-<link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="css/form.css">
-<link rel="stylesheet" href="css/navbar.css">
-<link rel="stylesheet" href="css/radioButton.css">
+<link rel="stylesheet" href="../styles/style.css">
+<link rel="stylesheet" href="../styles/form.css">
+<link rel="stylesheet" href="../styles/navbar.css">
+<link rel="stylesheet" href="../styles/radioButton.css">
 
 </head>
 <body>
 <header>
 <nav class="navbar">
-  <a href="index.php">Начало</a>
+  <a href="../index.php">Начало</a>
   
   <?php if(isset($_SESSION['u_id'])) { //if logged?>   
     <?php  if($_SESSION['u_role'] == 'admin') {//if logged as admin?>
@@ -42,7 +42,7 @@
         <button class="dropbtn"><?php echo $_SESSION['u_first'], ' ', $_SESSION['u_last']; ?> </button>
         <div class="dropdown-content">
           <a href="changepass.php">Смяна на парола</a>
-          <a href="functions/api.php/logout">Изход</a>
+          <a href="controllers/api.php/logout">Изход</a>
         </div>
       </div> 
     </div>

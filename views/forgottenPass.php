@@ -10,7 +10,7 @@
 	<body>
 		<div class="box">
 			<h2>Забравена парола</h2>
-			<form autocomplete="off" action="functions/api.php/forgottenpass" method="POST">
+			<form autocomplete="off" action="controllers/api.php/forgottenpass" method="POST">
 				<div class="inputBox">
 					<input type="text" name="email" required="">
 					<label for="">E-mail</label>

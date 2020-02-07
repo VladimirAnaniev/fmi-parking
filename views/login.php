@@ -11,7 +11,7 @@
 	<body>
 		<div class="box">
 			<h2>Влизане</h2>
-			<form autocomplete="off" action="functions/api.php/login" method="POST">
+			<form autocomplete="off" action="controllers/api.php/login" method="POST">
 				<div class="inputBox">
 					<input type="text" name="email" required="">
 					<label for="">E-mail</label>

@@ -9,7 +9,7 @@ body {
     font-family: sans-serif;
     text-align: center;
     /* 	background: url(bg.jpg); */
-    background-image: url(../images/fmi.jpg);
+    background-image: url(../static/images/fmi.jpg);
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;

@@ -4,13 +4,13 @@
         header("Location: index.php?action=notauthorised");
         exit();
     }
-    include_once ('header.php')
+include_once('header.php')
 ?>
 
 <main>
     <div class="box">
 		<h2>Добавяне на курс</h2>
-        <form autocomplete="off" action="functions/api.php/addcourse" method="POST">
+        <form autocomplete="off" action="controllers/api.php/addcourse" method="POST">
            	<div class="inputBox">
 				<input type="text"    name="email" required="">
 				<label for="">E-mail на преподавателя</label>
@@ -63,5 +63,5 @@
 </main>
 
 <?php
-    include_once ('footer.php')
+include_once('footer.php')
 ?>
