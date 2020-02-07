@@ -10,7 +10,7 @@ include_once('header.php')
 <main>
     <div class="box">
 		<h2>Регистрация</h2>
-        <form autocomplete="off" action="controllers/api.php/register" method="POST">
+        <form autocomplete="off" action="/controllers/api.php/register" method="POST">
             <div class="inputBox">
 				<input type="text" name="first" required="">
 				<label for="">Име</label>

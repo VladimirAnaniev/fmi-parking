@@ -10,7 +10,7 @@
 	<body>
 		<div class="box">
 			<h2>Смяна на парола</h2>
-			<form autocomplete="off" action="controllers/api.php/changepass" method="POST">
+			<form autocomplete="off" action="/controllers/api.php/changepass" method="POST">
 				<div class="inputBox">
 					<input type="password" name="pwd" required="">
 					<label for="">Стара парола</label>

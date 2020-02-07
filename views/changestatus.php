@@ -10,7 +10,7 @@ include_once('header.php')
 <main>
     <div class="box">
 		<h2>Промяна в статуса на потребител</h2>
-        <form autocomplete="off" action="controllers/api.php/changestatus" method="POST">
+        <form autocomplete="off" action="/controllers/api.php/changestatus" method="POST">
             <div class="inputBox">
 				<input type="text"    name="email" required="">
 				<label for="">E-mail</label>
