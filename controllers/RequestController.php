@@ -45,47 +45,54 @@ class RequestController{
         return mail($to, $subject, $message, $headers); 
     }
 
-    private function checkBarierByEmail($email) {
-        //Error handlers
-        //Check for empty fields
-        if(empty($email)) {
-            header("Location:".INDEX_URL."?liftbarier=no");
-            exit();
-        }    
-    
-        $query = $this->parking_db->getUserByEmail($email);
+    private function liftBarrier($id)
+    {
+        $query = $this->parking_db->getUserById($id);
 
-        if($row = $query->fetch(PDO::FETCH_ASSOC)) {
-            $id = $row['u_id'];
+        if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
             $role = $row['u_role'];
-            if($this->checkShouldLiftBarrier($role,$id)) {
-                header("Location:".INDEX_URL."?liftbarier=yes");
-                exit();
-            } 
+            if ($this->checkShouldLiftBarrier($role, $id)) {
+                return true;
+            }
         }
-        header("Location:".INDEX_URL."?liftbarier=no");
+
+        return false;
     }
 
     private function checkShouldLiftBarrier($role, $id) {
-        if($role == 'admin' || $role == 'permanent') {
+        if ($this->parking_db->userIsLeaving($id)) {
+            $this->parking_db->freeParkingSpot($id);
+
             return true;
         }
 
+        if (!($this->parking_db->hasFreeParkingSpots())) {
+
+            return false;
+        }
+
+        if($role == 'admin' || $role == 'permanent') {
+            $this->parking_db->updateParkingSpots($id, null);
+
+            return true;
+        }
+
+
         if($role == 'temporary') {
-
-            $query = $this->parking_db->getCourseById($id);
-
             date_default_timezone_set('Europe/Sofia');
             $curWeekday = date('l');
             $curTime = date('H:i:s');
+            $duration = $this->calculateDuration($id, $curWeekday, $curTime);
 
-            while($row = $query->fetch(PDO::FETCH_ASSOC)) {
-                //echo $row['course_from'] . '-' . $row['course_to'];
-                if($row['course_day'] == $curWeekday && $row['course_from'] < $curTime && $curTime < $row['course_to']) {
-                    return true;
-                }
+            // Can't park today
+            if ($duration == 0) {
+                return false;
             }
+            $this->parking_db->updateParkingSpots($id, $duration);
+
+            return true;
         }
+
         return false;
     }
 
@@ -309,21 +316,17 @@ class RequestController{
     }
 
     public function checkCode() {
-        if(!isset($_GET['email'])) {
-            header("Location:".INDEX_URL."?liftbarier=no");
+        if (!isset($_GET['id'])) {
+            header("Location:".INDEX_URL."?liftbarrier=no");
             exit();
         }
-        $email = $_GET['email'];
-        
-        $this->checkBarierByEmail($email);
-    }
 
-    public function liftBarier() {
-        $this->checkSubmitPost();
-
-        $email = $_POST['email'];
-
-        $this->checkBarierByEmail($email);
+        $id = $_GET['id'];
+        if ($this->liftBarrier($id)) {
+            header("Location:".INDEX_URL."?liftbarrier=yes");
+        } else {
+            header("Location:".INDEX_URL."?liftbarrier=no");
+        }
     }
 
     public function forgottenPass() {
@@ -366,4 +369,23 @@ class RequestController{
         } 
     }
 
+    private function calculateDuration($id, $day, $curTime) {
+        $query = $this->parking_db->getCourseByTeacherAndDay($id, $day);
+
+        $curWeekday = date('l');
+        $row = $query->fetch(PDO::FETCH_ASSOC);
+
+        $start = strtotime($row["course_from"]);
+        $end = strtotime($row["course_to"]);
+        $cur = strtotime($curTime);
+
+        if($row['course_day'] == $curWeekday
+            && $start - 3600 <= $cur && $cur <= $end) {
+            $duration = ceil(($end - $cur + 3600) / 3600);
+
+            return $duration;
+        }
+
+        return 0;
+    }
 }
