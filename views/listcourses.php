@@ -4,7 +4,6 @@
 
 <?php
     require_once '../models/User.php';
-    require_once '../models/Course.php';
     require_once '../controllers/ParkingDB.php';
 
     $hasCourses = false;
@@ -16,7 +15,7 @@
     }
 ?>
 
-<?php if ($hasCourses) { ?>
+<?php if (is_logged_in() && $hasCourses) { ?>
     <div class="container float-left">
         <h2>Моите Курсове</h2>
         <br>
@@ -39,8 +38,8 @@
             </tbody>
         </table>
     </div>
-<?php } else {?>
-    <p>Нямате регистриране курсове.</p>
+<?php } else if (is_logged_in() && !$hasCourses) {?>
+<div class="alert alert-warning" role="alert">Нямате регистрирани курсове.</div>
 <?php } ?>
 
 
