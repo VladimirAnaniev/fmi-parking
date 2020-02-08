@@ -65,6 +65,10 @@ function get_greeting() {
                         </li>
                     <?php } ?>
                 <?php } ?>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/views/scancode.php">Сканирай QR код</a>
+                </li>
             </ul>
 
             <ul class="navbar-nav">
