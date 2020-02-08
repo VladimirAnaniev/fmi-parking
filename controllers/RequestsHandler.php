@@ -58,7 +58,6 @@ class RequestsHandler
 
         session_start();
 
-        include_once('routes.php');
         $cmd_args = explode('/',$cmd);
         
         $matched = false;

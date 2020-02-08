@@ -4,38 +4,41 @@
         header("Location: index.php?action=notauthorised");
         exit();
     }
-include_once('header.php')
+    include_once 'header.php';
 ?>
 
-<main>
-    <div class="box">
-		<h2>Промяна в статуса на потребител</h2>
-        <form autocomplete="off" action="/controllers/api.php/changestatus" method="POST">
-            <div class="inputBox">
-				<input type="text"    name="email" required="">
-				<label for="">E-mail</label>
-            </div>
-            <label class="button-container">Щатен
-                <input type="radio" checked="checked" name="role" value="permanent">
-                <span class="checkmark"></span>
-            </label>
-            <label class="button-container">Не щатен
-                <input type="radio" name="role" value="temporary">
-                <span class="checkmark"></span>
-            </label>
-            <label class="button-container">Администратор
-                <input type="radio" name="role" value="admin">
-                <span class="checkmark"></span>
-            </label> 
-            <label class="button-container">Блокиран
-                <input type="radio" name="role" value="blocked">
-                <span class="checkmark"></span>
-            </label>
-			<input type="submit" name="submit" value="Промени">
-		</form>
+<form class="form" autocomplete="off" action="/controllers/api.php/changestatus" method="POST">
+	<h1 class="h3 mb-3 font-weight-normal">Промени потребител</h1>
+
+	<div class=form-group>
+		<label for="emailInput" class="sr-only">Имейл Адрес</label>
+		<input type="email" required name="email" class="form-control" id="emailInput" placeholder="Имелйл Адрес">
     </div>
-</main>
+    <div class=form-group>
+        <label class="button-container">
+            <input type="radio" checked="checked" name="role" value="permanent">
+            Щатен
+        </label>
+        <label class="button-container">
+            <input type="radio" name="role" value="temporary">
+            Не щатен
+        </label>
+
+        <br/>
+
+        <label class="button-container">
+            <input type="radio" name="role" value="admin">
+            Администратор
+        </label>
+        <label class="button-container">
+            <input type="radio" name="role" value="blocked">
+            Блокиран
+        </label>
+    </div>
+
+	<input type="submit" name="submit" class="btn btn-lg btn-primary btn-block" value="Промени">
+</form>
 
 <?php
-include_once('footer.php')
+    include_once 'footer.php';
 ?>
