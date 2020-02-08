@@ -1,5 +1,6 @@
 <?php
 
+require_once 'ParkingDB.php';
 
 class ParkingSpot
 {
@@ -24,7 +25,8 @@ class ParkingSpot
         $this->free = $free;
     }
 
-    public static function get_all($connection) {
+    public static function get_all_parking_spots() {
+        $connection = ParkingDB::getInstance()->getConnection();
         $query = $connection->query(self::$SELECT_ALL_PARKING_SPOTS);
 
         $parking_spots = array();
@@ -66,5 +68,3 @@ class ParkingSpot
         return $this->free;
     }
 }
-
-?>

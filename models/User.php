@@ -45,7 +45,8 @@ class User
         return $result;
     }
 
-    public static function getCourses($userId) {
+    public static function getCourses($userId)
+    {
         $conn = ParkingDB::getInstance()->getConnection();
         $sql = "SELECT * FROM courses WHERE teacher_id = :id";
 
@@ -54,8 +55,14 @@ class User
 
         $courses = array();
         while ($row = $query->fetch()) {
-            $course = new Course($row["course_id"], $row["course_title"], $row["teacher_id"], $row["course_day"],
-            $row["course_from"], $row["course_to"]);
+            $course = new Course(
+                $row["course_id"],
+                $row["course_title"],
+                $row["teacher_id"],
+                $row["course_day"],
+                $row["course_from"],
+                $row["course_to"]
+            );
 
             array_push($courses, $course);
         }
@@ -157,5 +164,65 @@ class User
     public function setCar($car)
     {
         $this->car = $car;
+    }
+
+    /**
+     * @brief Updates DB with the user's new password hash
+     */
+    public static function changePasswordByEmail($email, $newPassword)
+    {
+        $sql = "UPDATE users SET u_password = :newPasswordHash WHERE u_email = $email;";
+        $connection = ParkingDB::getInstance()->getConnection();
+        $query = $connection->prepare($sql);
+        $newPasswordHash = password_hash($newPassword, PASSWORD_DEFAULT);
+        $query->bindParam(':newPasswordHash', $newPasswordHash);
+        $query->execute();
+    }
+
+    public static function getUserById($id)
+    {
+        $sql = "SELECT * FROM users WHERE u_id = :id";
+        $connection = ParkingDB::getInstance()->getConnection();
+        $query = $connection->prepare($sql);
+        $query->execute(['id' => $id]);
+        return self::createUserByExecutedQuery($query);
+    }
+
+    public static function getUserByEmail($email)
+    {
+        $sql = "SELECT * FROM users WHERE u_email = :email";
+        $connection = ParkingDB::getInstance()->getConnection();
+        $query = $connection->prepare($sql);
+        $query->execute(['email' => $email]);
+        return self::createUserByExecutedQuery($query);
+    }
+
+    public static function getPasswordHashByEmail($email)
+    {
+        $sql = "SELECT * FROM users WHERE u_email = :email";
+        $connection = ParkingDB::getInstance()->getConnection();
+        $query = $connection->prepare($sql);
+        $query->execute(['email' => $email]);
+        $row = $query->fetch(PDO::FETCH_ASSOC);
+        if (!$row) {
+            return null;
+        }
+        return $row['u_password'];
+    }
+
+    private static function createUserByExecutedQuery($executedQuery)
+    {
+        $row = $executedQuery->fetch(PDO::FETCH_ASSOC);
+        if (!$row) {
+            return null;
+        }
+        return new User(
+            $row['u_first'],
+            $row['u_last'],
+            $row['u_email'],
+            $row['u_role'],
+            $row['u_id'],
+            $row['car']
+        );
     }
 }

@@ -3,8 +3,8 @@
 ?>
 
 <?php
-    require_once '../models/User.php';
-    require_once '../controllers/ParkingDB.php';
+    require_once 'models/User.php';
+    require_once 'models/ParkingDB.php';
 
     $hasCourses = false;
     $courses = array();
