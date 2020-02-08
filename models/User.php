@@ -45,8 +45,10 @@ class User
         return $result;
     }
 
-    public static function getCourses($conn, $userId) {
+    public static function getCourses($userId) {
+        $conn = ParkingDB::getInstance()->getConnection();
         $sql = "SELECT * FROM courses WHERE teacher_id = :id";
+
         $query = $conn->prepare($sql);
         $query->execute(['id' => $userId]);
 

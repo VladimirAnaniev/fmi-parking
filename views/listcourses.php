@@ -10,7 +10,7 @@
     $courses = array();
 
     if (is_logged_in()) {
-        $courses = User::getCourses(ParkingDB::getInstance()->getConnection(), $_SESSION['u_id']);
+        $courses = User::getCourses($_SESSION['u_id']);
         $hasCourses = sizeof($courses) > 0;
     }
 ?>
