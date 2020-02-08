@@ -13,15 +13,15 @@
             <h1>Статус на паркинга</h1>
             <div class="card-deck">
                 <?php foreach ($parking_spots as $spot): ?>
-                <div class="card">
-                    <div class="card-body text-white <?php echo $spot->isFree() ? 'bg-success' : 'bg-danger' ?>">
-                        <div class="card-title">Място номер <?php echo $spot->getNumber() ?></div>
+                <div class="card  text-white <?php echo $spot->isFree() ? 'bg-success' : 'bg-danger' ?>">
+                    <div class="card-header">Място номер <?php echo $spot->getNumber() ?></div>
+                    <div class="card-body">
                         <p class="card-text">
                             <?php if($spot->isFree()) { ?>
                                 Мястото е свободно
                             <?php } else { ?>
-                                <p>Заето от <?php echo $spot->getOwner() ?> с номер <?php echo $spot->getCar() ?>. </p>
-                                <p>Oт <?php echo $spot->getTimeIn() ?> до <?php echo $spot->getTimeOut() ?>.</p>
+                                <p>Заето от <?php echo $spot->getOwner() ?> с номер на колата <?php echo $spot->getCar() ?>. </p>
+                                <p>Oт <?php echo $spot->getTimeIn() ?> <?php echo ($spot->getTimeOut() ? "до ".$spot->getTimeOut() : "") ?>.</p>
                             <?php } ?>
                         </p>
                     </div>
