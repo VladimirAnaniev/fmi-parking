@@ -143,13 +143,6 @@ ALTER TABLE `parking_spots`
   ADD KEY `owner` (`owner`);
 
 --
--- Indexes for table `timetable`
---
-ALTER TABLE `timetable`
-  ADD PRIMARY KEY (`subject`,`room`,`day`,`start_time`,`end_time`),
-  ADD KEY `user_id` (`user_id`);
-
---
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -195,12 +188,6 @@ ALTER TABLE `courses`
 ALTER TABLE `parking_spots`
   ADD CONSTRAINT `parking_spots_ibfk_1` FOREIGN KEY (`car`) REFERENCES `cars` (`license_plate`),
   ADD CONSTRAINT `parking_spots_ibfk_2` FOREIGN KEY (`owner`) REFERENCES `users` (`u_id`);
-
---
--- Constraints for table `timetable`
---
-ALTER TABLE `timetable`
-  ADD CONSTRAINT `timetable_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`u_id`);
 
 --
 -- Constraints for table `users`
