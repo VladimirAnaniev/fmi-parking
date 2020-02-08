@@ -47,5 +47,4 @@ class ParkingDBController{
         $query = $this->connection->prepare($sql);
         $query->execute($newCourse);
     }
-    
 }

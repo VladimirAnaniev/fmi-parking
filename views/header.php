@@ -59,6 +59,10 @@ function get_greeting() {
                                 <a class="dropdown-item" href="/views/addcourse.php">Добавяне на курс</a>
                             </div>
                         </li>
+                    <?php } else { ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/views/listcourses.php">Моите курсове</a>
+                        </li>
                     <?php } ?>
                 <?php } ?>
             </ul>
