@@ -24,7 +24,7 @@ const handleQrCode = payload => {
 
 const openGate = content => {
    fetch('/controllers/api.php/checkcode?id=' + content.id)
-      .then(() => appendMessage(`Welcome, ${content.name}`))
+      .then(() => appendMessage(`Barrier opened, ${content.name}`))
       .catch(err => appendMessage(err.message));
 };
 
