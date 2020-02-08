@@ -1,6 +1,6 @@
 <?php
 
-    const BASE = "http://localhost/";
+    const BASE = "/";
     const VIEWS = BASE."views/";
     const INDEX_URL = BASE."index.php";
     const LOGIN_URL = VIEWS."login.php";

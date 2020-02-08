@@ -5,10 +5,15 @@
 
     if(isset($_SESSION['u_id'])) {
         $email = $_SESSION['u_email'];
-        QRcode::png("http://localhost/controllers/api.php/checkcode?email=$email");//,'file.png');
-        //echo '<img src="file.png" />';
+
+        $payload = array(
+            "id" => $_SESSION['u_id'], 
+            "name" => $_SESSION['u_first']." ".$_SESSION['u_last']
+        );
+
+        QRcode::png(json_encode($payload), false, QR_ECLEVEL_L, 10);
     } else {
-    header("Location: index.php?action=notauthorised");
-    exit();
-}
+        header("Location: index.php?action=notauthorised");
+        exit();
+    }
 ?>
