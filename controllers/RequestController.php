@@ -102,15 +102,22 @@ class RequestController{
     }
     
     public function register() {
-        $this->checkAdminAuthorisation();
         $this->checkSubmitPost();
 
         $first = $_POST['first'];
         $last  = $_POST['last'];
         $email = $_POST['email'];
         $role = $_POST['role'];
+        $pwd = $_POST['pwd'];
+        $pwdRepeat = $_POST["pwd-repeat"];
     
         //Error handlers
+        // External use has found a way to register as admin
+        if($_SESSION['u_role'] != 'admin' && $role == 'admin') {
+            header("Location:".INDEX_URL."?action=unauthorized");
+            exit();
+        }
+
         //Check for empty fields
         if(empty($first) || empty($last) || empty($email) || empty($role)) {
             header("Location:" .REGISTER_URL."?register=empty");
@@ -135,19 +142,21 @@ class RequestController{
             exit();
         } 
 
-        //Hashing the password
-        //$pwd = $this->generatePassword(12);
-        $pwd = 'pass';
+        //Password check
+        if ($pwd != $pwdRepeat) {
+            //TODO: Must be handled correctly
+            header("Location:".REGISTER_URL."?register=passwordsNotMatch");
+            exit();
+        }
         $hashedPwd = password_hash($pwd, PASSWORD_DEFAULT);
         
         //Insert the user into the database
         $newUser = ['first' => $first, 'last' => $last, 'email' => $email, 'password' => $hashedPwd, 'role' => $role];
         $this->parking_db->insertNewUser($newUser);
                 
-        $msg = "Здравейте, $first $last.\n С Вашият имейл бе създаден профил в системата за паркиране към ФМИ!
-            \n Вашата парола е: $pwd";
+        $msg = "Здравейте, $first $last.\nС Вашият имейл бе създаден профил в системата за паркиране на ФМИ!";
         $subject = "Създаден профил";
-        $this->mail_utf8($email,$subject,$msg);
+        $this->mail_utf8($email, $subject, $msg);
         
         header("Location:".INDEX_URL."?register=success");
         exit();
@@ -187,7 +196,7 @@ class RequestController{
     }
 
     public function addCourse() {
-        $this->checkAdminAuthorisation();    
+        $this->checkAdminAuthorisation();
         $this->checkSubmitPost();
 
         $email = $_POST['email'];
