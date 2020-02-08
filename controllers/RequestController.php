@@ -45,6 +45,18 @@ class RequestController{
         return mail($to, $subject, $message, $headers); 
     }
 
+    private function checkBarrierWithId($id)
+    {
+        $query = $this->parking_db->getUserById($id);
+
+        if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+            $role = $row['u_role'];
+            if ($this->checkShouldLiftBarrier($role, $id)) {
+                header("Location:".INDEX_URL."?liftbarrier=yes");
+            }
+        }
+    }
+
     private function checkBarierByEmail($email) {
         //Error handlers
         //Check for empty fields
@@ -67,25 +79,32 @@ class RequestController{
     }
 
     private function checkShouldLiftBarrier($role, $id) {
+        if (!$this->parking_db->hasFreeParkingSpots()) {
+
+            return false;
+        }
+
+        date_default_timezone_set('Europe/Sofia');
+        $curTime = date('H:i:s');
+
         if($role == 'admin' || $role == 'permanent') {
+            $this->parking_db->updateParkingSpots($id, $curTime, "NULL");
+
             return true;
         }
 
         if($role == 'temporary') {
-
-            $query = $this->parking_db->getCourseById($id);
-
-            date_default_timezone_set('Europe/Sofia');
-            $curWeekday = date('l');
-            $curTime = date('H:i:s');
-
-            while($row = $query->fetch(PDO::FETCH_ASSOC)) {
-                //echo $row['course_from'] . '-' . $row['course_to'];
-                if($row['course_day'] == $curWeekday && $row['course_from'] < $curTime && $curTime < $row['course_to']) {
-                    return true;
-                }
+            if (!$this->canParkToday($id)) {
+                return false;
             }
+
+            $duration = $this->calculateDuration();
+            $this->parking_db->updateParkingSpots($id, $curTime, $duration);
+
+            return true;
+
         }
+
         return false;
     }
 
@@ -309,13 +328,21 @@ class RequestController{
     }
 
     public function checkCode() {
-        if(!isset($_GET['email'])) {
+/*      if(!isset($_GET['email'])) {
             header("Location:".INDEX_URL."?liftbarier=no");
             exit();
         }
         $email = $_GET['email'];
         
         $this->checkBarierByEmail($email);
+*/
+        if (!isset($_GET['id'])) {
+            header("Location:".INDEX_URL."?liftbarrier=no");
+            exit();
+        }
+
+        $id = $_GET['id'];
+        $this->checkBarrierWithId($id);
     }
 
     public function liftBarier() {
@@ -366,4 +393,24 @@ class RequestController{
         } 
     }
 
+    private function canParkToday($id)
+    {
+        return true;
+    }
+
+    private function calculateDuration()
+    {
+        /*$query = $this->parking_db->getCourseById($id);
+
+        $curWeekday = date('l');
+
+        while($row = $query->fetch(PDO::FETCH_ASSOC)) {
+            //echo $row['course_from'] . '-' . $row['course_to'];
+            if($row['course_day'] == $curWeekday && $row['course_from'] < $curTime && $curTime < $row['course_to']) {
+                return true;
+            }
+        }*/
+
+        return 2;
+    }
 }

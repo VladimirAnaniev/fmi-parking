@@ -14,6 +14,13 @@ class ParkingDBController{
         $query->execute(['email' => $email]);
         return $query;
     }
+
+    public function getUserById($id) {
+        $sql = "SELECT * FROM users WHERE u_id = :id";
+        $query = $this->connection->prepare($sql);
+        $query->execute(['id' => $id]);
+        return $query;
+    }
     
     public function changeUserPassword($newData) {
         $sql = "UPDATE users SET u_password = :password WHERE u_email = :email;";
@@ -46,5 +53,25 @@ class ParkingDBController{
                 VALUES (:name, :teacher_id, :day, :from, :to)";
         $query = $this->connection->prepare($sql);
         $query->execute($newCourse);
+    }
+
+    public function hasFreeParkingSpots()
+    {
+        $sql = "SELECT * FROM parking_spots WHERE free=1";
+        $query = $this->connection->prepare($sql);
+
+        $query->execute();
+
+        return $query->rowCount() > 0;
+    }
+
+    public function updateParkingSpots($id, $time_in, $duration)
+    {
+        $sql = "UPDATE parking_spots 
+                SET free=0, owner=:id, time_in=:time_in, duration=:duration 
+                WHERE number = (SELECT number from parking_spots where free = 1 LIMIT 1)";
+
+        $query = $this->connection->prepare($sql);
+        $query->execute(['id' => $id, "time_in" => $time_in, "duration"=>$duration]);
     }
 }
