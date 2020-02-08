@@ -5,7 +5,13 @@
 
     if(isset($_SESSION['u_id'])) {
         $email = $_SESSION['u_email'];
-        QRcode::png(json_encode(array("id" => $_SESSION['u_id'])));
+
+        $payload = array(
+            "id" => $_SESSION['u_id'], 
+            "name" => $_SESSION['u_first']." ".$_SESSION['u_last']
+        );
+
+        QRcode::png(json_encode($payload));
     } else {
         header("Location: index.php?action=notauthorised");
         exit();
