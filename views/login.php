@@ -8,7 +8,7 @@
     include_once 'header.php';
 ?>
 
-<form class="form" autocomplete="off" action="functions/api.php/login" method="POST">
+<form class="form" autocomplete="off" action="/controllers/api.php/login" method="POST">
 	<h1 class="h3 mb-3 font-weight-normal">Влезте в профила си</h1>
 
 	<div class=form-group>

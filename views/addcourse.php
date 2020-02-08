@@ -7,9 +7,8 @@
     include_once 'header.php';
 ?>
 
-<form class="form" autocomplete="off" action="functions/api.php/addcourse" method="POST">
+<form class="form" autocomplete="off" action="/controllers/api.php/addcourse" method="POST">
 	<h1 class="h3 mb-3 font-weight-normal">Добавяне на курс</h1>
-
 	<div class=form-group>
 		<label for="emailInput" class="sr-only">Имейл на преподавателя</label>
 		<input type="email" required name="email" class="form-control" id="emailInput" placeholder="Имейл на преподавателя">
