@@ -2,9 +2,10 @@
 
 <?php
 require_once 'controllers/ParkingSpotsController.php';
+require_once 'models/ParkingSpotService.php';
 
-$parking_spots = ParkingSpot::get_all_parking_spots();
-$free_spots = ParkingSpotsController::count_free_parking_spots($parking_spots);
+$parking_spots = ParkingSpotsController::getAllParkingSpots();
+$free_spots = ParkingSpotsController::countFreeParkingSpots($parking_spots);
 ?>
 
 <div class="container">

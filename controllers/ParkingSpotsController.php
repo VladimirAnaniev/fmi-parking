@@ -1,12 +1,16 @@
 <?php
 require_once 'models/ParkingSpot.php';
+require_once 'models/ParkingSpotService.php';
 
 class ParkingSpotsController
 {
-    public static function count_free_parking_spots($parking_spots)
+    public static function getAllParkingSpots()
     {
-        return count(array_filter($parking_spots, function ($spot) {
-            return $spot->isFree();
-        }));
+        return ParkingSpotService::getAllParkingSpots();
+    }
+
+    public static function countFreeParkingSpots($parking_spots)
+    {
+        return ParkingSpotService::countFreeParkingSpots();
     }
 }
