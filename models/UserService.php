@@ -30,7 +30,7 @@ class UserService
         $query->execute($newUser);
     }
 
-    public static function getCourses($userId)
+    public static function getCoursesByUserId($userId)
     {
         $connection = ParkingDB::getInstance()->getConnection();
         $sql = "SELECT * FROM courses WHERE teacher_id = :id";

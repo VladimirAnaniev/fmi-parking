@@ -5,13 +5,13 @@ include_once 'header.php';
 <?php
 require_once 'models/User.php';
 require_once 'models/ParkingDB.php';
-require_once 'models/UserService.php';
+require_once 'controllers/UserController.php';
 
 $hasCourses = false;
 $courses = array();
 
 if (is_logged_in()) {
-    $courses = UserService::getCourses($_SESSION['u_id']);
+    $courses = UserController::getCoursesByUserId($_SESSION['u_id']);
     $hasCourses = sizeof($courses) > 0;
 }
 ?>

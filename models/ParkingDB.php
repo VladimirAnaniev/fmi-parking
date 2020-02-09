@@ -1,6 +1,6 @@
 <?php
 
-require_once 'config/dbconfig.php';
+require_once __DIR__ . '/../config/dbconfig.php';
 
 class ParkingDB
 {
