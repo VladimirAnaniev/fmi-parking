@@ -168,15 +168,15 @@ class User
 
     /**
      * @brief Updates DB with the user's new password hash
+     * @return true if DB was sucessfully updated; false otherwise
      */
     public static function changePasswordByEmail($email, $newPassword)
     {
-        $sql = "UPDATE users SET u_password = :newPasswordHash WHERE u_email = $email;";
+        $sql = "UPDATE users SET u_password = :newPasswordHash WHERE u_email = :email;";
         $connection = ParkingDB::getInstance()->getConnection();
         $query = $connection->prepare($sql);
         $newPasswordHash = password_hash($newPassword, PASSWORD_DEFAULT);
-        $query->bindParam(':newPasswordHash', $newPasswordHash);
-        $query->execute();
+        return $query->execute([':newPasswordHash' => $newPasswordHash, ':email' => $email]);
     }
 
     public static function getUserById($id)

@@ -1,6 +1,7 @@
 <?php
 require 'ParkingDBController.php';
 require 'routes.php';
+require '../models/User.php';
 
 class RequestController
 {
@@ -255,7 +256,6 @@ class RequestController
 
     public function changePass()
     {
-
         $this->checkLoggedAuthorisation();
         $this->checkSubmitPost();
 
@@ -276,7 +276,10 @@ class RequestController
         }
 
         if (password_verify($pwd, User::getPasswordHashByEmail($email))) {
-            User::changePasswordByEmail($email, $newPwd);
+            if (!User::changePasswordByEmail($email, $newPwd)) {
+                header("Location:" . INDEX_URL . "?changepass=fail");
+                exit();
+            }
 
             $msg = "Здравейте, $first $last.\n Вашата парола за системата за паркиране към ФМИ бе променена!
             \n Новата Ви парола е: $newPwd";
@@ -356,7 +359,10 @@ class RequestController
         $user = User::getUserByEmail($email);
         if ($user) {
             $newPassword = $this->generatePassword(12);
-            User::changePasswordByEmail($email, $newPassword);
+            if (!User::changePasswordByEmail($email, $newPassword)) {
+                header("Location:" . INDEX_URL . "?changepass=fail");
+                exit();
+            }
 
             $firstName = $user->getUFirst();
             $lastName = $user->getULast();

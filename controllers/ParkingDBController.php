@@ -1,5 +1,5 @@
 <?php
-require 'models/ParkingDB.php';
+require '../models/ParkingDB.php';
 class ParkingDBController{
     private $connection;
 
