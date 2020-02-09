@@ -5,7 +5,7 @@ include_once 'header.php';
 <?php
 require_once 'models/User.php';
 require_once 'models/ParkingDB.php';
-require 'models/UserService.php';
+require_once 'models/UserService.php';
 
 $hasCourses = false;
 $courses = array();

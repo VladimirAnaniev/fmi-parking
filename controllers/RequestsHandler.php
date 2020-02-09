@@ -1,5 +1,5 @@
 <?php
-require 'RequestController.php';
+require_once 'RequestController.php';
 include_once 'routes.php';
 
 class RequestsHandler
@@ -50,8 +50,8 @@ class RequestsHandler
             $this->request_controller->forgottenPass();
         });
     }
-    
-    public function run(){ 
+
+    public function run(){
 
         $method = $_SERVER['REQUEST_METHOD'];
         $cmd = $_SERVER['PATH_INFO'];
@@ -59,7 +59,7 @@ class RequestsHandler
         session_start();
 
         $cmd_args = explode('/',$cmd);
-        
+
         $matched = false;
         foreach($this->requests as $request){
             if($request['method'] === $method && $request['cmd'] === $cmd_args[1]){
@@ -69,7 +69,7 @@ class RequestsHandler
             }
         }
 
-        if(!$matched) {            
+        if(!$matched) {
             header("Location:".INDEX_URL."?action=wrongCommand");
         }
     }

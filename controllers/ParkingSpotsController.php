@@ -1,5 +1,5 @@
 <?php
-require 'models/ParkingSpot.php';
+require_once 'models/ParkingSpot.php';
 
 class ParkingSpotsController
 {

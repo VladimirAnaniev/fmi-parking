@@ -1,8 +1,8 @@
 <?php
-require 'ParkingDBController.php';
-require 'routes.php';
-require '../models/User.php';
-require '../models/UserService.php';
+require_once 'ParkingDBController.php';
+require_once 'routes.php';
+require_once '../models/User.php';
+require_once '../models/UserService.php';
 
 class RequestController
 {

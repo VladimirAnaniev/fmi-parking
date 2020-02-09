@@ -1,6 +1,6 @@
 <?php
 
-require 'Course.php';
+require_once 'Course.php';
 
 class User
 {
