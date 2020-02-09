@@ -1,10 +1,9 @@
 <?php
 
+require_once 'ParkingDB.php';
 
 class ParkingSpot
 {
-    private  static $SELECT_ALL_PARKING_SPOTS = "SELECT * FROM parking_spots";
-
     private $number;
     private $car;
     private $owner;
@@ -22,20 +21,6 @@ class ParkingSpot
         $this->duration = $duration;
         $this->time_out = $time_out;
         $this->free = $free;
-    }
-
-    public static function get_all($connection) {
-        $query = $connection->query(self::$SELECT_ALL_PARKING_SPOTS);
-
-        $parking_spots = array();
-        while ($row = $query->fetch()) {
-            $spot = new ParkingSpot($row["number"], $row["car"], $row["owner"], $row["time_in"],
-            $row["duration"], $row["time_out"], $row["free"]);
-
-            array_push($parking_spots, $spot);
-        }
-
-        return $parking_spots;
     }
 
     public function getNumber() {
@@ -66,5 +51,3 @@ class ParkingSpot
         return $this->free;
     }
 }
-
-?>

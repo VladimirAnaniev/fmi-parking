@@ -1,6 +1,6 @@
 <?php
 
-require 'Course.php';
+require_once 'Course.php';
 
 class User
 {
@@ -28,39 +28,6 @@ class User
         $this->u_role = $u_role;
         $this->u_id = $u_id;
         $this->car = $car;
-    }
-
-
-    public static function getAllUsers($conn)
-    {
-        $result = $conn->query("SELECT * FROM `users`;");
-        return $result;
-    }
-
-    public static function addUser($conn, $args)
-    {
-        $result = $conn
-            ->prepare("INSERT INTO `users` (`u_first`, `u_last`, `u_email`, `u_role`) VALUES (?,?,?,?);")
-            ->execute($args);
-        return $result;
-    }
-
-    public static function getCourses($userId) {
-        $conn = ParkingDB::getInstance()->getConnection();
-        $sql = "SELECT * FROM courses WHERE teacher_id = :id";
-
-        $query = $conn->prepare($sql);
-        $query->execute(['id' => $userId]);
-
-        $courses = array();
-        while ($row = $query->fetch()) {
-            $course = new Course($row["course_id"], $row["course_title"], $row["teacher_id"], $row["course_day"],
-            $row["course_from"], $row["course_to"]);
-
-            array_push($courses, $course);
-        }
-
-        return $courses;
     }
 
     /**
