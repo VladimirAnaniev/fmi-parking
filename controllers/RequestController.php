@@ -2,6 +2,7 @@
 require 'ParkingDBController.php';
 require 'routes.php';
 require '../models/User.php';
+require '../models/UserService.php';
 
 class RequestController
 {
@@ -54,7 +55,7 @@ class RequestController
 
     private function liftBarrier($id)
     {
-        $user = User::getUserById($id);
+        $user = UserService::getUserById($id);
         if ($user) {
             if ($this->checkShouldLiftBarrier($user->getURole(), $id)) {
                 return true;
@@ -153,7 +154,7 @@ class RequestController
             exit();
         }
 
-        $emailIsAlreadyTaken = User::getUserByEmail($email) != null;
+        $emailIsAlreadyTaken = UserService::getUserByEmail($email) != null;
         if ($emailIsAlreadyTaken) {
             header("Location:" . REGISTER_URL . "?register=emailTaken");
             exit();
@@ -191,9 +192,9 @@ class RequestController
 
         $email = $_POST['email'];
         $pwd   = $_POST['pwd'];
-        $user = User::getUserByEmail($email);
+        $user = UserService::getUserByEmail($email);
 
-        $credentialsAreValid = $user != null && password_verify($pwd, User::getPasswordHashByEmail($email));
+        $credentialsAreValid = $user != null && password_verify($pwd, UserService::getPasswordHashByEmail($email));
         if ($credentialsAreValid) {
             // Log in the user
             $_SESSION['u_id'] = $user->getUId();
@@ -243,7 +244,7 @@ class RequestController
             exit();
         }
 
-        $user = User::getUserByEmail($email);
+        $user = UserService::getUserByEmail($email);
         if ($user) {
             //Insert the course into the database
             $newCourse = ['name' => $name, 'teacher_id' => $user->getUId(), 'day' => $day, 'from' => $from, 'to' => $to];
@@ -275,8 +276,8 @@ class RequestController
             exit();
         }
 
-        if (password_verify($pwd, User::getPasswordHashByEmail($email))) {
-            if (!User::changePasswordByEmail($email, $newPwd)) {
+        if (password_verify($pwd, UserService::getPasswordHashByEmail($email))) {
+            if (!UserService::changePasswordByEmail($email, $newPwd)) {
                 header("Location:" . INDEX_URL . "?changepass=fail");
                 exit();
             }
@@ -305,7 +306,7 @@ class RequestController
             exit();
         }
 
-        $user = User::getUserByEmail($email);
+        $user = UserService::getUserByEmail($email);
         if ($user) {
             $firstName = $user->getUFirst();
             $lastName = $user->getULast();
@@ -356,10 +357,10 @@ class RequestController
             exit();
         }
 
-        $user = User::getUserByEmail($email);
+        $user = UserService::getUserByEmail($email);
         if ($user) {
             $newPassword = $this->generatePassword(12);
-            if (!User::changePasswordByEmail($email, $newPassword)) {
+            if (!UserService::changePasswordByEmail($email, $newPassword)) {
                 header("Location:" . INDEX_URL . "?changepass=fail");
                 exit();
             }
