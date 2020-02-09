@@ -1,11 +1,11 @@
 <?php include_once 'views/header.php'; ?>
 
 <?php
-require_once 'controllers/ParkingSpotsController.php';
+require_once 'controllers/ParkingSpotController.php';
 require_once 'models/ParkingSpotService.php';
 
-$parking_spots = ParkingSpotsController::getAllParkingSpots();
-$free_spots = ParkingSpotsController::countFreeParkingSpots($parking_spots);
+$parking_spots = ParkingSpotController::getAllParkingSpots();
+$free_spots = ParkingSpotController::countFreeParkingSpots($parking_spots);
 ?>
 
 <div class="container">
