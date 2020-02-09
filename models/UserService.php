@@ -7,26 +7,35 @@ class UserService
 {
     public static function getAllUsers()
     {
-        $conn = ParkingDB::getInstance()->getConnection();
-        $result = $conn->query("SELECT * FROM `users`;");
+        $connection = ParkingDB::getInstance()->getConnection();
+        $result = $connection->query("SELECT * FROM `users`;");
         return $result;
     }
 
     public static function addUser($args)
     {
-        $conn = ParkingDB::getInstance()->getConnection();
-        $result = $conn
+        $connection = ParkingDB::getInstance()->getConnection();
+        $result = $connection
             ->prepare("INSERT INTO `users` (`u_first`, `u_last`, `u_email`, `u_role`) VALUES (?,?,?,?);")
             ->execute($args);
         return $result;
     }
 
+    public static function insertNewUser($newUser)
+    {
+        $sql = "INSERT INTO users (u_first, u_last, u_email, u_password, u_role)
+                VALUES (:first, :last, :email, :password, :role)";
+        $connection = ParkingDB::getInstance()->getConnection();
+        $query = $connection->prepare($sql);
+        $query->execute($newUser);
+    }
+
     public static function getCourses($userId)
     {
-        $conn = ParkingDB::getInstance()->getConnection();
+        $connection = ParkingDB::getInstance()->getConnection();
         $sql = "SELECT * FROM courses WHERE teacher_id = :id";
 
-        $query = $conn->prepare($sql);
+        $query = $connection->prepare($sql);
         $query->execute(['id' => $userId]);
 
         $courses = array();

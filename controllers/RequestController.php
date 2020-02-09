@@ -170,7 +170,7 @@ class RequestController
 
         // Insert the user into the database
         $newUser = ['first' => $first, 'last' => $last, 'email' => $email, 'password' => $hashedPwd, 'role' => $role];
-        $this->parking_db->insertNewUser($newUser);
+        UserService::insertNewUser($newUser);
 
         $msg = "Здравейте, $first $last.\nС Вашият имейл бе създаден профил в системата за паркиране на ФМИ!";
         $subject = "Създаден профил";

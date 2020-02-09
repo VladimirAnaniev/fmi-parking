@@ -14,13 +14,6 @@ class ParkingDBController{
         $query->execute($newData);
     }
 
-    public function insertNewUser($newUser) {
-        $sql = "INSERT INTO users (u_first, u_last, u_email, u_password, u_role)
-                VALUES (:first, :last, :email, :password, :role)";
-        $query = $this->connection->prepare($sql);
-        $query->execute($newUser);
-    }
-
     public function getCourseByTeacherAndDay($teacher, $day) {
         $sql = "SELECT * FROM courses WHERE teacher_id = :id AND course_day=:cday";
         $query = $this->connection->prepare($sql);
