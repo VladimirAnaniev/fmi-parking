@@ -124,13 +124,4 @@ class Course
     {
         $this->courseTo = $courseTo;
     }
-
-    public static function getCourseById($id)
-    {
-        $sql = "SELECT * FROM courses WHERE teacher_id = :id";
-        $connection = ParkingDB::getInstance()->getConnection();
-        $query = $connection->prepare($sql);
-        $query->execute(['id' => $id]);
-        return $query;
-    }
 }
