@@ -32,7 +32,7 @@ const openGate = content => {
          appendMessage(`Отварям бариерата, ${content.name}`);
       })
       .catch(err =>  {
-         if(err.status === 401) {
+         if(err.message == 401) {
             appendMessage("Не можете да отворите бариерата по това време!");
          } else {
             appendMessage('Проблем с връзката към сървъра.')
