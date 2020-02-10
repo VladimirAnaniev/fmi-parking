@@ -4,31 +4,39 @@ require_once 'ParkingDB.php';
 
 class ParkingSpot
 {
+    private  static $SELECT_ALL_PARKING_SPOTS = "SELECT ps.number, ps.time_in, ps.time_out, ps.free, u.u_first as first, u.u_last as last FROM parking_spots ps LEFT JOIN users u ON u.u_id = ps.owner";
+
     private $number;
-    private $car;
     private $owner;
     private $time_in;
-    private $duration;
     private $time_out;
     private $free;
 
-    public function __construct($number, $car, $owner, $time_in, $duration, $time_out, $free)
+    public function __construct($number, $owner, $time_in, $time_out, $free)
     {
         $this->number = $number;
-        $this->car = $car;
         $this->owner = $owner;
         $this->time_in = $time_in;
-        $this->duration = $duration;
         $this->time_out = $time_out;
         $this->free = $free;
     }
 
-    public function getNumber() {
-        return $this->number;
+    public static function get_all($connection) {
+        $query = $connection->query(self::$SELECT_ALL_PARKING_SPOTS);
+
+        $parking_spots = array();
+        while ($row = $query->fetch()) {
+            $spot = new ParkingSpot($row["number"], $row["first"]." ".$row["last"], $row["time_in"],
+            $row["time_out"], $row["free"]);
+
+            array_push($parking_spots, $spot);
+        }
+
+        return $parking_spots;
     }
 
-    public function getCar() {
-        return $this->car;
+    public function getNumber() {
+        return $this->number;
     }
 
     public function getOwner() {
@@ -37,10 +45,6 @@ class ParkingSpot
 
     public function getTimeIn() {
         return $this->time_in;
-    }
-
-    public function getDuration() {
-        return $this->duration;
     }
 
     public function getTimeOut() {

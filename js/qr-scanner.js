@@ -24,8 +24,20 @@ const handleQrCode = payload => {
 
 const openGate = content => {
    fetch('/controllers/api.php/checkcode?id=' + content.id)
-      .then(() => appendMessage(`Barrier opened, ${content.name}`))
-      .catch(err => appendMessage(err.message));
+      .then(response => {
+         if(response.status !== 200) {
+            throw new Error(response.status);
+         }
+
+         appendMessage(`Отварям бариерата, ${content.name}`);
+      })
+      .catch(err =>  {
+         if(err.status === 401) {
+            appendMessage("Не можете да отворите бариерата по това време!");
+         } else {
+            appendMessage('Проблем с връзката към сървъра.')
+         }
+      });
 };
 
 const appendMessage = message => {

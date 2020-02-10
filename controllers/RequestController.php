@@ -329,15 +329,16 @@ class RequestController
     public function checkCode()
     {
         if (!isset($_GET['id'])) {
-            header("Location:" . INDEX_URL . "?liftbarrier=no");
+
+            header("HTTP/1.1 400 Bad Request");
             exit();
         }
 
         $id = $_GET['id'];
         if ($this->liftBarrier($id)) {
-            header("Location:" . INDEX_URL . "?liftbarrier=yes");
+            header("HTTP/1.1 200 OK");
         } else {
-            header("Location:" . INDEX_URL . "?liftbarrier=no");
+            header("HTTP/1.1 401 Unauthorized");
         }
     }
 

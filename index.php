@@ -20,8 +20,9 @@ $free_spots = ParkingSpotController::countFreeParkingSpots($parking_spots);
                             <?php if ($spot->isFree()) { ?>
                                 Мястото е свободно
                             <?php } else { ?>
-                                <p>Заето от <?php echo $spot->getOwner() ?> с номер на колата <?php echo $spot->getCar() ?>. </p>
-                                <p>Oт <?php echo $spot->getTimeIn() ?> <?php echo ($spot->getTimeOut() ? "до " . $spot->getTimeOut() : "") ?>.</p>
+
+                                <p>Заето от <?php echo $spot->getOwner() ?>.</p>
+                                <p>Oт <?php echo $spot->getTimeIn() ?> <?php echo ($spot->getTimeOut() ? "до ".$spot->getTimeOut() : "") ?>.</p>
                             <?php } ?>
                         </p>
                     </div>
