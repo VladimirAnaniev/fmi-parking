@@ -48,7 +48,7 @@ class RequestController
     }
 
     /**
-     * @return true if barrier lifted successfully; false otherwise
+     * @return true if barrier can be lifted for that ID; false otherwise
      */
     private function liftBarrier($id)
     {
