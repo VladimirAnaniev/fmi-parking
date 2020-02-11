@@ -4,6 +4,7 @@ require_once 'routes.php';
 require_once __DIR__ . '/../models/User.php';
 require_once __DIR__ . '/../models/UserService.php';
 require_once __DIR__ . '/../models/ParkingSpotService.php';
+require_once __DIR__ . '/../models/CourseService.php';
 
 class RequestController
 {
@@ -247,7 +248,7 @@ class RequestController
         if ($user) {
             //Insert the course into the database
             $newCourse = ['name' => $name, 'teacher_id' => $user->getUId(), 'day' => $day, 'from' => $from, 'to' => $to];
-            $this->parking_db->insertNewCourse($newCourse);
+            CourseService::insertNewCourse($newCourse);
             header("Location:" . INDEX_URL . "?addcourse=success");
         } else {
             header("Location:" . ADD_COURSE_URL . "?addcourse=noSuchEmail");
@@ -380,7 +381,7 @@ class RequestController
 
     private function calculateDuration($id, $day, $curTime)
     {
-        $query = $this->parking_db->getCourseByTeacherAndDay($id, $day);
+        $query = CourseService::getCourseByTeacherAndDay($id, $day);
 
         $curWeekday = date('l');
         $row = $query->fetch(PDO::FETCH_ASSOC);
@@ -390,11 +391,10 @@ class RequestController
         $cur = strtotime($curTime);
 
         if (
-            $row['course_day'] == $curWeekday
-            && $start - 3600 <= $cur && $cur <= $end
+            $row['course_day'] == $curWeekday &&
+            $start - 3600 <= $cur && $cur <= $end
         ) {
             $duration = ceil(($end - $cur + 3600) / 3600);
-
             return $duration;
         }
 
