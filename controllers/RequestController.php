@@ -1,5 +1,4 @@
 <?php
-require_once 'ParkingDBController.php';
 require_once 'routes.php';
 require_once __DIR__ . '/../models/User.php';
 require_once __DIR__ . '/../models/UserService.php';
@@ -8,13 +7,6 @@ require_once __DIR__ . '/../models/CourseService.php';
 
 class RequestController
 {
-    private $parking_db;
-
-    public function __construct()
-    {
-        $this->parking_db = new ParkingDBController();
-    }
-
     private function errorResponse($errorMsg, $errCode)
     {
         http_response_code($errCode);
