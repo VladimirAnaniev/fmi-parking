@@ -1,8 +1,9 @@
 <?php
 require_once 'ParkingDBController.php';
 require_once 'routes.php';
-require_once '../models/User.php';
-require_once '../models/UserService.php';
+require_once __DIR__ . '/../models/User.php';
+require_once __DIR__ . '/../models/UserService.php';
+require_once __DIR__ . '/../models/ParkingSpotService.php';
 
 class RequestController
 {
@@ -73,8 +74,7 @@ class RequestController
             return true;
         }
 
-        if (!($this->parking_db->hasFreeParkingSpots())) {
-
+        if (!ParkingSpotService::hasFreeParkingSpots()) {
             return false;
         }
 
@@ -83,7 +83,6 @@ class RequestController
 
             return true;
         }
-
 
         if ($role == 'temporary') {
             date_default_timezone_set('Europe/Sofia');

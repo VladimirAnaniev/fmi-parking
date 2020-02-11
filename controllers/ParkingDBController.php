@@ -28,16 +28,6 @@ class ParkingDBController{
         $query->execute($newCourse);
     }
 
-    public function hasFreeParkingSpots()
-    {
-        $sql = "SELECT * FROM parking_spots WHERE free=1";
-        $query = $this->connection->prepare($sql);
-
-        $query->execute();
-
-        return $query->rowCount() > 0;
-    }
-
     public function updateParkingSpots($id, $duration)
     {
         $sql = "UPDATE parking_spots

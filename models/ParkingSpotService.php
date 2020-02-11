@@ -15,10 +15,10 @@ class ParkingSpotService
         $parking_spots = array();
         while ($row = $query->fetch()) {
             $spot = new ParkingSpot(
-                $row["number"], 
-                $row["first"]." ".$row["last"], 
+                $row["number"],
+                $row["first"]." ".$row["last"],
                 $row["time_in"],
-                $row["time_out"], 
+                $row["time_out"],
                 $row["free"]);
 
             array_push($parking_spots, $spot);
@@ -33,5 +33,14 @@ class ParkingSpotService
         return count(array_filter($parking_spots, function ($spot) {
             return $spot->isFree();
         }));
+    }
+
+    public static function hasFreeParkingSpots()
+    {
+        $sql = "SELECT * FROM parking_spots WHERE free=1";
+        $connection = ParkingDB::getInstance()->getConnection();
+        $query = $connection->prepare($sql);
+        $query->execute();
+        return $query->rowCount() > 0;
     }
 }
