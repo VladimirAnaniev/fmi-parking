@@ -13,15 +13,4 @@ class ParkingDBController{
         $query = $this->connection->prepare($sql);
         $query->execute($newData);
     }
-
-    public function userIsLeaving($id)
-    {
-        $sql = "SELECT * FROM parking_spots
-                WHERE owner=:id AND free=0";
-
-        $query = $this->connection->prepare($sql);
-        $query->execute(['id' => $id]);
-
-        return $query->rowCount() > 0;
-    }
 }

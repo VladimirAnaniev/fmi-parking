@@ -114,4 +114,15 @@ class UserService
             $row['car']
         );
     }
+
+    public static function hasUserOccupiedParkingSpot($id)
+    {
+        $sql = "SELECT * FROM parking_spots
+                WHERE owner=:id AND free=0";
+
+        $connection = ParkingDB::getInstance()->getConnection();
+        $query = $connection->prepare($sql);
+        $query->execute(['id' => $id]);
+        return $query->rowCount() > 0;
+    }
 }

@@ -55,21 +55,22 @@ class RequestController
         return mail($to, $subject, $message, $headers);
     }
 
+    /**
+     * @return true if barrier lifted successfully; false otherwise
+     */
     private function liftBarrier($id)
     {
         $user = UserService::getUserById($id);
-        if ($user) {
-            if ($this->checkShouldLiftBarrier($user->getURole(), $id)) {
-                return true;
-            }
-        }
-
-        return false;
+        return $user != null &&
+               $this->shouldLiftBarrier($user->getURole(), $id);
     }
 
-    private function checkShouldLiftBarrier($role, $id)
+    /**
+     * TODO has unexpected side effects which is confusing; refactor
+     */
+    private function shouldLiftBarrier($role, $id)
     {
-        if ($this->parking_db->userIsLeaving($id)) {
+        if (UserService::hasUserOccupiedParkingSpot($id)) {
             ParkingSpotService::freeParkingSpot($id);
             return true;
         }
