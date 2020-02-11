@@ -70,8 +70,7 @@ class RequestController
     private function checkShouldLiftBarrier($role, $id)
     {
         if ($this->parking_db->userIsLeaving($id)) {
-            $this->parking_db->freeParkingSpot($id);
-
+            ParkingSpotService::freeParkingSpot($id);
             return true;
         }
 
@@ -80,8 +79,7 @@ class RequestController
         }
 
         if ($role == 'admin' || $role == 'permanent') {
-            $this->parking_db->updateParkingSpots($id, null);
-
+            ParkingSpotService::updateParkingSpot($id, null);
             return true;
         }
 
@@ -95,8 +93,7 @@ class RequestController
             if ($duration == 0) {
                 return false;
             }
-            $this->parking_db->updateParkingSpots($id, $duration);
-
+            ParkingSpotService::updateParkingSpot($id, $duration);
             return true;
         }
 
