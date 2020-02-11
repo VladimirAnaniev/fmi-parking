@@ -7,10 +7,4 @@ class ParkingDBController{
     {
         $this->connection = ParkingDB::getInstance()->getConnection();
     }
-
-    public function changeUserStatus($newData) {
-        $sql = "UPDATE users SET u_role = :role WHERE u_email = :email;";
-        $query = $this->connection->prepare($sql);
-        $query->execute($newData);
-    }
 }

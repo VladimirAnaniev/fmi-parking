@@ -309,9 +309,7 @@ class RequestController
             $firstName = $user->getUFirst();
             $lastName = $user->getULast();
 
-            //change user status
-            $newData = ['email' => $email, 'role' => $role];
-            $this->parking_db->changeUserStatus($newData);
+            UserService::chageUserRoleByEmail($email, $role);
 
             $msg = "Здравейте, $firstName $lastName. \n Вашата роля в системата за паркиране към ФМИ бе променена!
                         \n Новата Ви роля е: $role";
