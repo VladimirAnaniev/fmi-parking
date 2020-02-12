@@ -21,8 +21,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `parkingdb`
 --
-
-CREATE DATABASE IF NOT EXISTS `parkingdb` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+DROP DATABASE IF EXISTS `parkingdb`;
+CREATE DATABASE `parkingdb` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE `parkingdb`;
 
 -- --------------------------------------------------------
@@ -114,7 +114,7 @@ INSERT INTO `users` (`u_first`, `u_last`, `u_email`, `u_password`, `u_role`, `u_
 ('Невена', 'Гаджева', 'temp@abv.bg', '$2y$10$u.wQ9zr0Es/TRTdgweM/mOi1LM36/IS1RnIxBccTuj/uPChaRwz7q', 'temporary', 6, NULL),
 ('Трифон', 'Трифонов', 'trifonFMI@gmail.com', '$2y$10$uljynZe3M9uI7NCPZCbbDOMZcCn7bVp/wPsHKdu0/PK1qb5tV0X1G', 'permanent', 7, NULL),
 ('Милен', 'Петров', 'm.petrovFMI@abv.bg', '$2y$10$B8v5YexEH6TcVMW0cpL7o.AUk9aHgEgL8cC6nC6sUZifTBruwYuqS', 'permanent', 28, NULL),
-('Hakan', 'Halil', 'hakansunay@abv.bg', 'parola', 'temporary', 31, NULL);
+('Hakan', 'Halil', 'haki@abv.bg', '$2y$10$zoa88qePnyNpOudVrCKDyeSp14p5ZC6QZ8jdREfpBRZOmEFOm8eM6', 'temporary', 31, NULL);
 
 --
 -- Indexes for dumped tables
