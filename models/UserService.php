@@ -114,4 +114,23 @@ class UserService
             $row['car']
         );
     }
+
+    public static function hasUserOccupiedParkingSpot($id)
+    {
+        $sql = "SELECT * FROM parking_spots
+                WHERE owner=:id AND free=0";
+
+        $connection = ParkingDB::getInstance()->getConnection();
+        $query = $connection->prepare($sql);
+        $query->execute(['id' => $id]);
+        return $query->rowCount() > 0;
+    }
+
+    public static function chageUserRoleByEmail($email, $newRole)
+    {
+        $sql = "UPDATE users SET u_role = :role WHERE u_email = :email;";
+        $connection = ParkingDB::getInstance()->getConnection();
+        $query = $connection->prepare($sql);
+        $query->execute(['email' => $email, 'role' => $newRole]);
+    }
 }

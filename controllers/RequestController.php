@@ -1,18 +1,12 @@
 <?php
-require_once 'ParkingDBController.php';
 require_once 'routes.php';
-require_once '../models/User.php';
-require_once '../models/UserService.php';
+require_once __DIR__ . '/../models/User.php';
+require_once __DIR__ . '/../models/UserService.php';
+require_once __DIR__ . '/../models/ParkingSpotService.php';
+require_once __DIR__ . '/../models/CourseService.php';
 
 class RequestController
 {
-    private $parking_db;
-
-    public function __construct()
-    {
-        $this->parking_db = new ParkingDBController();
-    }
-
     private function errorResponse($errorMsg, $errCode)
     {
         http_response_code($errCode);
@@ -53,37 +47,34 @@ class RequestController
         return mail($to, $subject, $message, $headers);
     }
 
+    /**
+     * @return true if barrier can be lifted for that ID; false otherwise
+     */
     private function liftBarrier($id)
     {
         $user = UserService::getUserById($id);
-        if ($user) {
-            if ($this->checkShouldLiftBarrier($user->getURole(), $id)) {
-                return true;
-            }
-        }
-
-        return false;
+        return $user != null &&
+               $this->shouldLiftBarrier($user->getURole(), $id);
     }
 
-    private function checkShouldLiftBarrier($role, $id)
+    /**
+     * TODO has unexpected side effects which is confusing; refactor
+     */
+    private function shouldLiftBarrier($role, $id)
     {
-        if ($this->parking_db->userIsLeaving($id)) {
-            $this->parking_db->freeParkingSpot($id);
-
+        if (UserService::hasUserOccupiedParkingSpot($id)) {
+            ParkingSpotService::freeParkingSpot($id);
             return true;
         }
 
-        if (!($this->parking_db->hasFreeParkingSpots())) {
-
+        if (!ParkingSpotService::hasFreeParkingSpots()) {
             return false;
         }
 
         if ($role == 'admin' || $role == 'permanent') {
-            $this->parking_db->updateParkingSpots($id, null);
-
+            ParkingSpotService::updateParkingSpot($id, null);
             return true;
         }
-
 
         if ($role == 'temporary') {
             date_default_timezone_set('Europe/Sofia');
@@ -95,8 +86,7 @@ class RequestController
             if ($duration == 0) {
                 return false;
             }
-            $this->parking_db->updateParkingSpots($id, $duration);
-
+            ParkingSpotService::updateParkingSpot($id, $duration);
             return true;
         }
 
@@ -248,7 +238,7 @@ class RequestController
         if ($user) {
             //Insert the course into the database
             $newCourse = ['name' => $name, 'teacher_id' => $user->getUId(), 'day' => $day, 'from' => $from, 'to' => $to];
-            $this->parking_db->insertNewCourse($newCourse);
+            CourseService::insertNewCourse($newCourse);
             header("Location:" . INDEX_URL . "?addcourse=success");
         } else {
             header("Location:" . ADD_COURSE_URL . "?addcourse=noSuchEmail");
@@ -311,9 +301,7 @@ class RequestController
             $firstName = $user->getUFirst();
             $lastName = $user->getULast();
 
-            //change user status
-            $newData = ['email' => $email, 'role' => $role];
-            $this->parking_db->changeUserStatus($newData);
+            UserService::chageUserRoleByEmail($email, $role);
 
             $msg = "Здравейте, $firstName $lastName. \n Вашата роля в системата за паркиране към ФМИ бе променена!
                         \n Новата Ви роля е: $role";
@@ -381,7 +369,7 @@ class RequestController
 
     private function calculateDuration($id, $day, $curTime)
     {
-        $query = $this->parking_db->getCourseByTeacherAndDay($id, $day);
+        $query = CourseService::getCourseByTeacherAndDay($id, $day);
 
         $curWeekday = date('l');
         $row = $query->fetch(PDO::FETCH_ASSOC);
@@ -391,11 +379,10 @@ class RequestController
         $cur = strtotime($curTime);
 
         if (
-            $row['course_day'] == $curWeekday
-            && $start - 3600 <= $cur && $cur <= $end
+            $row['course_day'] == $curWeekday &&
+            $start - 3600 <= $cur && $cur <= $end
         ) {
             $duration = ceil(($end - $cur + 3600) / 3600);
-
             return $duration;
         }
 

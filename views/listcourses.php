@@ -3,9 +3,9 @@ include_once 'header.php';
 ?>
 
 <?php
-require_once 'models/User.php';
-require_once 'models/ParkingDB.php';
-require_once 'controllers/UserController.php';
+require_once __DIR__ . '/../models/User.php';
+require_once __DIR__ . '/../models/ParkingDB.php';
+require_once __DIR__ . '/../controllers/UserController.php';
 
 $hasCourses = false;
 $courses = array();
